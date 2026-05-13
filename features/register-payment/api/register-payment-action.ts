@@ -1,8 +1,8 @@
 "use server";
 
-import { supabase } from "@/shared/api/supabase";
 import { revalidatePath } from "next/cache";
 import dayjs from "dayjs";
+import { createClient } from "@/shared/api/supabase/server";
 
 export async function registerPaymentAction(formData: {
   studentId: string;
@@ -10,6 +10,7 @@ export async function registerPaymentAction(formData: {
   method: string;
   billingType: "monthly" | "per_class";
 }) {
+  const supabase = await createClient();
   // 1. Registrar el pago
   const { error: payError } = await supabase.from("payments").insert([
     {

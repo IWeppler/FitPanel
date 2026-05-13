@@ -3,6 +3,7 @@ export interface GymClass {
   name: string;
   day_of_week: number; // 0-6
   start_time: string;  // "19:00"
+  end_time: string;    // "20:00"
   capacity: number;
   is_active: boolean;
 }

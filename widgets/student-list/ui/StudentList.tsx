@@ -1,74 +1,78 @@
-import { getAllStudents } from "@/entities/student/api/get-all-students";
+import { createClient } from "@/shared/api/supabase/server";
 import { getPaymentStatus } from "@/entities/student/model/payment-logic";
 import { StudentStatusBadge } from "@/entities/student/ui/StudentStatusBadge";
+import { StudentActions } from "./StudentActions";
+import Link from "next/link";
 
 export const StudentList = async () => {
-  const students = await getAllStudents();
+  const supabase = await createClient();
+  const { data: students } = await supabase
+    .from("students")
+    .select("*")
+    .order("full_name", { ascending: true });
 
-  if (students.length === 0) {
+  if (!students || students.length === 0) {
     return (
-      <div className="text-center p-10 bg-white rounded-xl border-2 border-dashed border-gray-200">
-        <p className="text-gray-500">Aún no hay alumnos registrados.</p>
-      </div>
+      <p className="text-muted-foreground italic p-8 text-center">
+        No hay alumnos en la base de datos.
+      </p>
     );
   }
 
   return (
-    <div className="bg-white rounded-lg border border-gray-100 overflow-hidden">
-      {/* Vista de Tabla para Desktop / Lista para Mobile */}
+    <div className="bg-white border border-zinc-100 shadow-sm overflow-hidden font-inter">
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse">
           <thead>
-            <tr className="bg-gray-50 border-b border-gray-100">
-              <th className="p-4 text-xs font-bold text-gray-500 uppercase">
+            <tr className="bg-zinc-50/50 border-b border-zinc-100">
+              <th className="p-5 text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
                 Alumno
               </th>
-              <th className="p-4 text-xs font-bold text-gray-500 uppercase hidden md:table-cell">
+              <th className="p-5 text-[10px] font-bold text-muted-foreground uppercase tracking-wider hidden md:table-cell">
                 Plan
               </th>
-              <th className="p-4 text-xs font-bold text-gray-500 uppercase">
+              <th className="p-5 text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
                 Estado Pago
               </th>
-              <th className="p-4 text-xs font-bold text-gray-500 uppercase text-right">
+              <th className="p-5 text-[10px] font-bold text-muted-foreground uppercase tracking-wider text-right">
                 Acciones
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-50">
+          <tbody className="divide-y divide-zinc-50">
             {students.map((student) => {
               const pStatus = getPaymentStatus(student.due_date);
 
               return (
                 <tr
                   key={student.id}
-                  className="hover:bg-gray-50 transition-colors"
+                  className="hover:bg-zinc-50/80 transition-all group"
                 >
-                  <td className="p-4">
-                    <div className="flex flex-col">
-                      <span className="font-medium text-gray-900">
+                  <td className="p-5">
+                    <Link
+                      href={`/alumnos/${student.id}`}
+                      className="flex flex-col group/link"
+                    >
+                      <span className="text-sm text-zinc-900 group-hover/link:text-primary transition-colors uppercase tracking-tight">
                         {student.full_name}
                       </span>
-                      <span className="text-xs text-gray-400 md:hidden">
-                        {student.billing_type === "monthly"
-                          ? "Mensual"
-                          : "Por Clase"}
+                      <span className="text-[10px] text-zinc-400 font-medium">
+                        {student.phone || "Sin teléfono"}
                       </span>
-                    </div>
+                    </Link>
                   </td>
-                  <td className="p-4 hidden md:table-cell">
-                    <span className="text-sm text-gray-600 capitalize">
+                  <td className="p-5 hidden md:table-cell">
+                    <span className="text-xs font-bold text-zinc-600 bg-zinc-100 px-2 py-1 uppercase tracking-tighter">
                       {student.billing_type === "monthly"
                         ? "Mensual"
                         : "Por Clase"}
                     </span>
                   </td>
-                  <td className="p-4">
+                  <td className="p-5">
                     <StudentStatusBadge status={pStatus} />
                   </td>
-                  <td className="p-4 text-right">
-                    <button className="text-blue-600 hover:text-blue-800 text-sm font-medium px-3 py-1 rounded-md hover:bg-blue-50">
-                      Ver Perfil
-                    </button>
+                  <td className="p-5 text-right">
+                    <StudentActions student={student} />
                   </td>
                 </tr>
               );

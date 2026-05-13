@@ -1,26 +1,40 @@
 import { ClassSchedule } from "@/widgets/class-list/ui/ClassSchedule";
-import { CreateClassModal } from "@/features/manage-classes/ui/CreateClassModal";
+import { ClassFormModal } from "@/features/manage-classes/ui/ClassFormModal";
 import { Suspense } from "react";
+import { ClassModalProvider } from "@/features/manage-classes/model/use-class-modal";
+import { NewClassButton } from "@/features/manage-classes/ui/NewClassButton";
 
 export default function TurnosPage() {
   return (
-    <div className="space-y-10">
-      <header className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h1 className="heading-page">Clases y Turnos</h1>
-          <p className="text-muted-foreground">
-            Define tus horarios y cupos semanales.
-          </p>
-        </div>
-        <CreateClassModal />
-      </header>
+    <ClassModalProvider>
+      <div className="space-y-8">
+        <header className="flex items-center justify-between">
+          <div>
+            <h1 className="text-4xl font-heading text-zinc-900 uppercase tracking-tighter">
+              Clases y Turnos
+            </h1>
+            <p className="text-zinc-500 font-inter">
+              Definí tus horarios y cupos semanales.
+            </p>
+          </div>
 
-      <section className="space-y-6">
-        <h2 className="text-xl font-heading text-zinc-700">Agenda Semanal</h2>
-        <Suspense fallback={<p>Cargando agenda...</p>}>
-          <ClassSchedule />
-        </Suspense>
-      </section>
-    </div>
+          {/* Este botón ahora es un componente simple que dispara el provider */}
+          <NewClassButton />
+        </header>
+
+        <section className="space-y-6">
+          <Suspense
+            fallback={
+              <div className="h-96 bg-zinc-50 animate-pulse rounded-[32px]" />
+            }
+          >
+            <ClassSchedule />
+          </Suspense>
+        </section>
+
+        {/* El modal vive aquí, uno solo para toda la página */}
+        <ClassFormModal />
+      </div>
+    </ClassModalProvider>
   );
 }

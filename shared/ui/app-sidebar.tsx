@@ -5,8 +5,8 @@ import {
   Users,
   Calendar,
   DollarSign,
+  Receipt,
   TrendingUp,
-  Settings,
   LogOut,
 } from "lucide-react";
 import {
@@ -19,15 +19,16 @@ import {
   SidebarMenuItem,
 } from "@/shared/ui/sidebar";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
+import { logoutAction } from "@/features/auth/api/logout-action";
 
 const items = [
   { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
   { title: "Alumnos", url: "/alumnos", icon: Users },
   { title: "Turnos", url: "/turnos", icon: Calendar },
   { title: "Pagos", url: "/pagos", icon: DollarSign },
-  { title: "Gastos", url: "/gastos", icon: DollarSign },
+  { title: "Gastos", url: "/gastos", icon: Receipt },
   { title: "Reportes", url: "/reportes", icon: TrendingUp },
 ];
 
@@ -38,7 +39,13 @@ export function AppSidebar() {
     <Sidebar variant="sidebar" collapsible="icon">
       <SidebarHeader className="p-4">
         <div className="flex items-center gap-2 font-bold text-xl">
-          <Image src="/lvem.jpg" alt="Logo" width={40} height={40} />
+          <Image
+            src="/lvem.jpg"
+            alt="Logo"
+            width={40}
+            height={40}
+            className="rounded-lg"
+          />
           <span className="heading-page">LVEM</span>
         </div>
       </SidebarHeader>
@@ -63,10 +70,15 @@ export function AppSidebar() {
       <SidebarFooter className="p-4">
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton className="font-medium text-red-500 hover:text-red-600 hover:bg-red-50 cursor-pointer">
-              <LogOut />
-              <span>Cerrar Sesión</span>
-            </SidebarMenuButton>
+            <form action={logoutAction}>
+              <SidebarMenuButton
+                type="submit"
+                className="font-medium text-red-500 hover:text-red-600 hover:bg-red-50 cursor-pointer w-full"
+              >
+                <LogOut />
+                <span>Cerrar Sesión</span>
+              </SidebarMenuButton>
+            </form>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>

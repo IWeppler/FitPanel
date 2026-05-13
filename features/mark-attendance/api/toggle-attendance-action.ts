@@ -1,6 +1,6 @@
 "use server";
 
-import { supabase } from "@/shared/api/supabase";
+import { createClient } from "@/shared/api/supabase/server";
 import { revalidatePath } from "next/cache";
 
 export async function toggleAttendanceAction(
@@ -8,6 +8,8 @@ export async function toggleAttendanceAction(
   classId: string,
   currentStatus: string | null,
 ) {
+  const supabase = await createClient();
+
   if (currentStatus === "present") {
     // Si ya está presente, lo borramos (desmarcar)
     await supabase

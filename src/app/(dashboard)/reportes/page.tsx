@@ -1,7 +1,7 @@
 import { ExecutiveSummary } from "@/widgets/report-summary/ui/ExecutiveSummary";
 import { PaymentMethodBreakdown } from "@/widgets/report-charts/ui/PaymentMethodBreakdown";
 import { Suspense } from "react";
-import { TrendingUp, Users } from "lucide-react";
+import { Users } from "lucide-react";
 
 export default function ReportesPage() {
   return (

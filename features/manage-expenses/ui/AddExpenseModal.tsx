@@ -4,9 +4,6 @@ import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Plus, Loader2, Receipt } from "lucide-react";
 import { useRouter } from "next/navigation";
-
-import { supabase } from "@/shared/api/supabase";
-
 import { Button } from "@/shared/ui/button";
 import { Input } from "@/shared/ui/input";
 import { Label } from "@/shared/ui/label";
@@ -25,6 +22,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/shared/ui/select";
+import { createClient } from "@/shared/api/supabase/client";
 
 interface ExpenseFormValues {
   category: string;
@@ -44,6 +42,7 @@ const CATEGORIES = [
 ];
 
 export function AddExpenseModal() {
+  const supabase = createClient();
   const router = useRouter();
   const [open, setOpen] = useState(false);
 

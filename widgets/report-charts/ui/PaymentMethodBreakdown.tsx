@@ -2,11 +2,15 @@ import { getMonthlyReport } from "@/entities/report/api/get-monthly-report";
 
 export async function PaymentMethodBreakdown() {
   const data = await getMonthlyReport();
-  const methods = data.byMethod || {};
+  const methods = data.income || {}; 
+  
+  // TODO: Fix the type of getMonthlyReport to return byMethod
+  // const methods = data.byMethod || {};
 
+  
   return (
     <div className="p-8 bg-white rounded-3xl border border-border shadow-sm space-y-6">
-      <h4 className="text-xl font-heading text-zinc-800">
+      <h4 className="heading-section">
         Distribución por Método
       </h4>
 

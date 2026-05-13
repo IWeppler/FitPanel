@@ -16,9 +16,6 @@ export default function AlumnosPage() {
       </header>
 
       <section className="grid grid-cols-1 gap-8">
-        <h2 className="text-lg font-semibold mb-4 text-gray-700">
-          Listado Completo
-        </h2>
         <Suspense fallback={<p>Cargando alumnos...</p>}>
           <StudentList />
         </Suspense>

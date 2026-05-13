@@ -26,8 +26,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/shared/ui/select";
+import { createClient } from "@/shared/api/supabase/client";
 
 export const CreateStudentModal = () => {
+  const supabase = createClient();
   const [open, setOpen] = useState(false);
 
   const {

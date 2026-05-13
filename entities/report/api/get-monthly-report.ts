@@ -1,11 +1,12 @@
-import { supabase } from "@/shared/api/supabase";
+import { createClient } from "@/shared/api/supabase/server";
 import dayjs from "dayjs";
 
 export async function getMonthlyReport() {
+  const supabase = await createClient();
+
   const startOfMonth = dayjs().startOf("month").toISOString();
   const endOfMonth = dayjs().endOf("month").toISOString();
 
-  // 1. Promesas en paralelo para velocidad
   const [paymentsRes, expensesRes, studentsRes] = await Promise.all([
     supabase
       .from("payments")
@@ -25,19 +26,12 @@ export async function getMonthlyReport() {
   const outcome =
     expensesRes.data?.reduce((acc, e) => acc + Number(e.amount), 0) || 0;
 
-  // Split por método de pago
-  const byMethod = paymentsRes.data?.reduce((acc: any, p) => {
-    acc[p.method] = (acc[p.method] || 0) + Number(p.amount);
-    return acc;
-  }, {});
-
   return {
     income,
     outcome,
     net: income - outcome,
     activeStudents:
       studentsRes.data?.filter((s) => s.status === "active").length || 0,
-    byMethod,
     totalTransactions: paymentsRes.data?.length || 0,
   };
 }

@@ -13,7 +13,7 @@ export default function TurnosPage() {
             <h1 className="text-4xl font-heading text-zinc-900 uppercase tracking-tighter">
               Clases y Turnos
             </h1>
-            <p className="text-zinc-500 font-inter">
+            <p className="text-muted-foreground font-inter">
               Definí tus horarios y cupos semanales.
             </p>
           </div>
@@ -32,7 +32,6 @@ export default function TurnosPage() {
           </Suspense>
         </section>
 
-        {/* El modal vive aquí, uno solo para toda la página */}
         <ClassFormModal />
       </div>
     </ClassModalProvider>

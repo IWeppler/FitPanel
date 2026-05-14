@@ -13,7 +13,11 @@ export const AttendanceList = ({
     <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
       <div className="divide-y divide-gray-100">
         {students.map((student) => {
-          const pStatus = getPaymentStatus(student.due_date);
+          const pStatus = getPaymentStatus(
+            student.due_date,
+            student.current_debt,
+            student.plan_price,
+          );
           const isPresent = student.today_attendance === "present";
 
           return (
@@ -31,7 +35,6 @@ export const AttendanceList = ({
               </div>
 
               <div className="flex items-center gap-3">
-                {/* El botón interactivo ahora es un componente de cliente separado */}
                 <AttendanceToggleButton
                   studentId={student.id}
                   classId={classId}

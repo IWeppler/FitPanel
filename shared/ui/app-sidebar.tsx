@@ -50,7 +50,7 @@ export function AppSidebar() {
         </div>
       </SidebarHeader>
       <SidebarContent>
-        <SidebarMenu className="px-2">
+        <SidebarMenu className="px-2 font-inter">
           {items.map((item) => (
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton
@@ -73,7 +73,7 @@ export function AppSidebar() {
             <form action={logoutAction}>
               <SidebarMenuButton
                 type="submit"
-                className="font-medium text-red-500 hover:text-red-600 hover:bg-red-50 cursor-pointer w-full"
+                className="font-inter font-medium text-red-500 hover:text-red-600 hover:bg-red-50 cursor-pointer w-full"
               >
                 <LogOut />
                 <span>Cerrar Sesión</span>

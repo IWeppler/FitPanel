@@ -70,7 +70,7 @@ export async function ClassSchedule() {
 
                 {dayClasses.length === 0 && (
                   <div className="h-24 border-2 border-dashed border-zinc-50 rounded-[28px] flex items-center justify-center opacity-40">
-                    <span className="text-[10px] text-zinc-300 font-inter font-bold uppercase tracking-widest">
+                    <span className="text-[10px] text-muted-foreground font-inter font-bold uppercase tracking-widest">
                       Libre
                     </span>
                   </div>

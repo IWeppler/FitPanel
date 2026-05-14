@@ -12,4 +12,4 @@ export interface Student {
 }
 
 // Para el estado visual en la asistencia
-export type PaymentStatus = "up_to_date" | "debtor" | "due_today";
+export type PaymentStatus = "paid" | "late" | "partial" | "pending";

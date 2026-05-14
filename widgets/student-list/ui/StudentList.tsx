@@ -2,7 +2,7 @@ import { createClient } from "@/shared/api/supabase/server";
 import { getPaymentStatus } from "@/entities/student/model/payment-logic";
 import { StudentStatusBadge } from "@/entities/student/ui/StudentStatusBadge";
 import { StudentActions } from "./StudentActions";
-import Link from "next/link";
+import { StudentNameTrigger } from "./StudentNameTrigger";
 
 export const StudentList = async () => {
   const supabase = await createClient();
@@ -25,23 +25,23 @@ export const StudentList = async () => {
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="bg-zinc-50/50 border-b border-zinc-100">
-              <th className="p-5 text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
+              <th className="px-4 py-2 font-heading text-lg font-medium text-muted-foreground uppercase tracking-widest">
                 Alumno
               </th>
-              <th className="p-5 text-[10px] font-bold text-muted-foreground uppercase tracking-wider hidden md:table-cell">
+              <th className="px-4 py-2 font-heading text-lg font-medium text-muted-foreground uppercase tracking-widest md:table-cell">
                 Plan
               </th>
-              <th className="p-5 text-[10px] font-bold text-muted-foreground uppercase tracking-wider">
+              <th className="px-4 py-2 font-heading text-lg font-medium text-muted-foreground uppercase tracking-widest">
                 Estado Pago
               </th>
-              <th className="p-5 text-[10px] font-bold text-muted-foreground uppercase tracking-wider text-right">
+              <th className="px-4 md:pr-12 py-2 font-heading text-lg font-medium text-muted-foreground uppercase tracking-widest text-right">
                 Acciones
               </th>
             </tr>
           </thead>
           <tbody className="divide-y divide-zinc-50">
             {students.map((student) => {
-              const pStatus = getPaymentStatus(student.due_date);
+              const pStatus = getPaymentStatus(student.due_date, student.current_debt, student.plan_price);
 
               return (
                 <tr
@@ -49,17 +49,7 @@ export const StudentList = async () => {
                   className="hover:bg-zinc-50/80 transition-all group"
                 >
                   <td className="p-5">
-                    <Link
-                      href={`/alumnos/${student.id}`}
-                      className="flex flex-col group/link"
-                    >
-                      <span className="text-sm text-zinc-900 group-hover/link:text-primary transition-colors uppercase tracking-tight">
-                        {student.full_name}
-                      </span>
-                      <span className="text-[10px] text-zinc-400 font-medium">
-                        {student.phone || "Sin teléfono"}
-                      </span>
-                    </Link>
+                    <StudentNameTrigger student={student} />
                   </td>
                   <td className="p-5 hidden md:table-cell">
                     <span className="text-xs font-bold text-zinc-600 bg-zinc-100 px-2 py-1 uppercase tracking-tighter">
